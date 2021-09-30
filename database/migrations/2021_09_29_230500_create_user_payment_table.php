@@ -17,7 +17,7 @@ class CreateUserPaymentTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('payment_id')->constrained();
-            $table->decimal('amount');
+            $table->decimal('amount')->default(0);
             $table->string('description')->nullable();
             $table->timestamps();
         });
