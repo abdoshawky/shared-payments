@@ -15,6 +15,10 @@ class Payment extends Model
         'completed' => 'boolean'
     ];
 
+    protected $withCount = [
+        'users'
+    ];
+
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
@@ -27,6 +31,11 @@ class Payment extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'user_payment')->using(UserPayment::class);
+    }
+
+    public function userPayments()
+    {
+        return $this->hasMany(UserPayment::class);
     }
 }

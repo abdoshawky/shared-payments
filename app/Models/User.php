@@ -35,6 +35,11 @@ class User extends Authenticatable
 
     public function payments()
     {
-        return $this->belongsToMany(Payment::class);
+        return $this->belongsToMany(Payment::class, 'user_payment')->using(UserPayment::class);
+    }
+
+    public function userPayment()
+    {
+        return $this->hasMany(UserPayment::class);
     }
 }
