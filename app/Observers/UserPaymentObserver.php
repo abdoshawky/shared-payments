@@ -2,27 +2,27 @@
 
 namespace App\Observers;
 
-use App\Models\UserPayment;
+use App\Models\PaymentShare;
 
 class UserPaymentObserver
 {
-    public function created(UserPayment $userPayment)
+    public function created(PaymentShare $paymentShare)
     {
-        $payment = $userPayment->payment;
+        $payment = $paymentShare->payment;
         $totalAmount = $payment->amount;
         $usersCount = $payment->users_count;
 
-        foreach ($payment->userPayments as $userPayment) {
-            $userPaymentAmount = $totalAmount / $usersCount;
-            $userPayment->update(['amount' => $userPaymentAmount]);
+        foreach ($payment->shares as $share) {
+            $shareAmount = $totalAmount / $usersCount;
+            $share->update(['share' => $shareAmount]);
         }
     }
 
-    public function updated(UserPayment $userPayment)
+    public function updated(PaymentShare $paymentShare)
     {
-        $payment = $userPayment->payment;
+        $payment = $paymentShare->payment;
 
-        $payment->amount = $payment->userPayments->sum('amount');
+        $payment->amount = $payment->shares->sum('share');
         $payment->saveQuietly();
     }
 }

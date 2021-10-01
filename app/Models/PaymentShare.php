@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class UserPayment extends Pivot
+class PaymentShare extends Pivot
 {
     use HasFactory;
 
-    protected $table = 'user_payment';
+    protected $table = "payment_shares";
 
     public function user()
     {

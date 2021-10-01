@@ -57,7 +57,7 @@ class Payment extends Resource
 
             BelongsToManyField::make('Users', 'users', User::class)->canSelectAll(),
 
-            HasMany::make('User Payments', 'userPayments', UserPayment::class)
+            HasMany::make('Payment shares', 'shares', PaymentShare::class)
         ];
     }
 }

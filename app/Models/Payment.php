@@ -31,11 +31,11 @@ class Payment extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'user_payment')->using(UserPayment::class);
+        return $this->belongsToMany(User::class, 'payment_shares')->using(PaymentShare::class);
     }
 
-    public function userPayments()
+    public function shares()
     {
-        return $this->hasMany(UserPayment::class);
+        return $this->hasMany(PaymentShare::class);
     }
 }
