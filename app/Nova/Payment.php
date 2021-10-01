@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\MarkPaymentAsCompleted;
 use Benjacho\BelongsToManyField\BelongsToManyField;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
@@ -58,6 +59,13 @@ class Payment extends Resource
             BelongsToManyField::make('Users', 'users', User::class)->canSelectAll(),
 
             HasMany::make('Payment shares', 'shares', PaymentShare::class)
+        ];
+    }
+
+    public function actions(Request $request): array
+    {
+        return [
+            MarkPaymentAsCompleted::make()
         ];
     }
 }
