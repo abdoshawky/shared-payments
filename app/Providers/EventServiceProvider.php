@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Payment;
-use App\Models\UserPayment;
+use App\Models\PaymentShare;
 use App\Observers\PaymentObserver;
 use App\Observers\UserPaymentObserver;
 use Illuminate\Auth\Events\Registered;
@@ -32,6 +32,6 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         Payment::observe(PaymentObserver::class);
-        UserPayment::observe(UserPaymentObserver::class);
+        PaymentShare::observe(UserPaymentObserver::class);
     }
 }

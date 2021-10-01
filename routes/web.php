@@ -16,3 +16,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('test', function () {
+    $userId = 2;
+    $userShares = \App\Models\PaymentShare::query()
+        ->whereHas('payment', function ($query) use ($userId) {
+            $query->where('completed', 0)->where('paid_by', '!=', $userId);
+        })
+        ->where('user_id', $userId)
+        ->get();
+
+    return response()->json($userShares);
+});
