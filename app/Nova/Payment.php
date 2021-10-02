@@ -7,11 +7,13 @@ use Benjacho\BelongsToManyField\BelongsToManyField;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
+use PosLifestyle\DateRangeFilter\DateRangeFilter;
 
 class Payment extends Resource
 {
@@ -48,15 +50,26 @@ class Payment extends Resource
     public function fields(Request $request): array
     {
         return [
-            ID::make(__('ID'), 'id')->sortable(),
-            Text::make('Name')->rules(['required']),
-            Number::make('Amount')->step('0.1')->rules(['required']),
+            ID::make(__('ID'), 'id')
+                ->sortable(),
+            Text::make('Name')
+                ->rules(['required']),
+            Number::make('Amount')
+                ->step('0.01')
+                ->rules(['required']),
             BelongsTo::make('Paid by', 'paidBy', User::class),
-            BelongsTo::make('Created by', 'createdBy', User::class)->exceptOnForms(),
-            Textarea::make('Description')->nullable(),
-            Boolean::make('Completed')->exceptOnForms(),
+            BelongsTo::make('Created by', 'createdBy', User::class)
+                ->onlyOnDetail(),
+            Textarea::make('Description')
+                ->nullable(),
+            Boolean::make('Completed')
+                ->exceptOnForms(),
 
-            BelongsToManyField::make('Users', 'users', User::class)->canSelectAll(),
+            BelongsToManyField::make('Users', 'users', User::class)
+                ->rules(['required'])
+                ->canSelectAll(),
+
+            DateTime::make('Created at')->format('YYYY-MM-DD h:mm A')->exceptOnForms(),
 
             HasMany::make('Payment shares', 'shares', PaymentShare::class)
         ];
@@ -66,6 +79,13 @@ class Payment extends Resource
     {
         return [
             MarkPaymentAsCompleted::make()
+        ];
+    }
+
+    public function filters(Request $request): array
+    {
+        return [
+            new DateRangeFilter('Created at', 'created_at')
         ];
     }
 }

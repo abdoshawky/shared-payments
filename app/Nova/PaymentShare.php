@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Nova\Filters\UserFilter;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
@@ -44,7 +45,7 @@ class PaymentShare extends Resource
             ID::make(__('ID'), 'id')->sortable(),
             BelongsTo::make('User'),
             BelongsTo::make('Payment'),
-            Number::make('Share')
+            Number::make('Share'),
         ];
     }
 
@@ -67,7 +68,9 @@ class PaymentShare extends Resource
      */
     public function filters(Request $request)
     {
-        return [];
+        return [
+            UserFilter::make()
+        ];
     }
 
     /**
