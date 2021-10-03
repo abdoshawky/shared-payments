@@ -60,8 +60,6 @@ class Payment extends Resource
             BelongsTo::make('Paid by', 'paidBy', User::class),
             BelongsTo::make('Created by', 'createdBy', User::class)
                 ->onlyOnDetail(),
-            Textarea::make('Description')
-                ->nullable(),
             Boolean::make('Completed')
                 ->exceptOnForms(),
 
