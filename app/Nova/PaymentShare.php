@@ -2,9 +2,12 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\MarkPaymentShareAsCompleted;
+use App\Nova\Filters\SharePaidBy;
 use App\Nova\Filters\UserFilter;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 
@@ -45,7 +48,9 @@ class PaymentShare extends Resource
             ID::make(__('ID'), 'id')->sortable(),
             BelongsTo::make('User'),
             BelongsTo::make('Payment'),
+            BelongsTo::make('Paid by', 'paidBy', User::class),
             Number::make('Share'),
+            Boolean::make('Completed')->exceptOnForms()
         ];
     }
 
@@ -63,13 +68,14 @@ class PaymentShare extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @return array
      */
-    public function filters(Request $request)
+    public function filters(Request $request): array
     {
         return [
-            UserFilter::make()
+            UserFilter::make(),
+            SharePaidBy::make()
         ];
     }
 
@@ -92,6 +98,8 @@ class PaymentShare extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
+        return [
+            MarkPaymentShareAsCompleted::make()
+        ];
     }
 }

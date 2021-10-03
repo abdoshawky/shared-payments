@@ -12,8 +12,9 @@ class MarkPaymentAsCompleted extends Action
 
     public function handle(ActionFields $fields, Collection $models)
     {
-        foreach($models as $model) {
-            $model->update(['completed' => true]);
+        foreach($models as $payment) {
+            $payment->update(['completed' => true]);
+            $payment->shares()->update(['completed' => true]);
         }
     }
 }

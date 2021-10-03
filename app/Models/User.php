@@ -48,16 +48,15 @@ class User extends Authenticatable
     {
         // How much do I own to other users
         $usersMoney = $this->shares()
-            ->whereHas('payment', function ($query) {
-                $query->where('completed', 0)->where('paid_by', '!=', $this->id);
-            })
+            ->where('completed', 0)
+            ->whereRelation('paidBy', 'users.id', '!=', $this->id)
             ->sum('share');
 
         // How mush does other users own me
-        $myMoney = PaymentShare::where('user_id', '!=', $this->id)
-            ->whereHas('payment', function ($query) {
-                $query->where('completed', 0)->where('paid_by', $this->id);
-            })
+        $myMoney = PaymentShare::query()
+            ->where('user_id', '!=', $this->id)
+            ->where('completed', 0)
+            ->whereRelation('paidBy', 'users.id', $this->id)
             ->sum('share');
 
         return $usersMoney - $myMoney;
@@ -67,16 +66,14 @@ class User extends Authenticatable
     {
         // How much do I own to this user
         $userMoney = $this->shares()
-            ->whereHas('payment', function ($query) use ($user) {
-                $query->where('completed', 0)->where('paid_by', $user->id);
-            })
+            ->where('completed', 0)
+            ->whereRelation('paidBy', 'users.id', $user->id)
             ->sum('share');
 
         // How mush does this user owns to me
         $myMoney = $user->shares()
-            ->whereHas('payment', function ($query){
-                $query->where('completed', 0)->where('paid_by', $this->id);
-            })
+            ->where('completed', 0)
+            ->whereRelation('paidBy', 'users.id', $this->id)
             ->sum('share');
 
         return $userMoney - $myMoney;

@@ -33,7 +33,9 @@ class Payment extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'payment_shares')->using(PaymentShare::class);
+        return $this->belongsToMany(User::class, 'payment_shares')
+            ->withTimestamps()
+            ->using(PaymentShare::class);
     }
 
     public function shares()
