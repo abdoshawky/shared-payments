@@ -14,7 +14,7 @@ class UserPaymentObserver
 
         foreach ($payment->shares as $share) {
             $shareAmount = $totalAmount / $usersCount;
-            $share->update(['share' => $shareAmount]);
+            $share->update(['share' => $shareAmount, 'completed' => $payment->paid_by == $share->user_id]);
         }
     }
 
