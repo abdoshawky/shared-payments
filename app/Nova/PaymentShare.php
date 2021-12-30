@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Nova\Actions\MarkPaymentShareAsCompleted;
+use App\Nova\Filters\PaymentShareStatus;
 use App\Nova\Filters\SharePaidBy;
 use App\Nova\Filters\UserFilter;
 use Illuminate\Http\Request;
@@ -20,6 +21,8 @@ class PaymentShare extends Resource
      * @var string
      */
     public static string $model = \App\Models\PaymentShare::class;
+
+    public static $perPageViaRelationship = 20;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -50,7 +53,7 @@ class PaymentShare extends Resource
             BelongsTo::make('User'),
             BelongsTo::make('Payment'),
             BelongsTo::make('Paid by', 'paidBy', User::class),
-            Number::make('Share'),
+            Number::make('Share')->sortable(),
             DateTime::make('Created at')->format('YYYY-MM-DD h:mm A')->exceptOnForms(),
             Boolean::make('Completed')->exceptOnForms()
         ];
@@ -77,7 +80,8 @@ class PaymentShare extends Resource
     {
         return [
             UserFilter::make(),
-            SharePaidBy::make()
+            SharePaidBy::make(),
+            PaymentShareStatus::make()
         ];
     }
 

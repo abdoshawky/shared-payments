@@ -44,6 +44,11 @@ class User extends Authenticatable
         return $this->hasMany(PaymentShare::class);
     }
 
+    public function inCompleteShares()
+    {
+        return $this->hasMany(PaymentShare::class)->where('completed', false);
+    }
+
     public function getDebtsAttribute()
     {
         // How much do I own to other users
