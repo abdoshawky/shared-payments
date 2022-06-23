@@ -63,7 +63,8 @@ class Payment extends Resource
             Boolean::make('Completed')
                 ->exceptOnForms(),
 
-            BelongsToManyField::make('Users', 'users', User::class)
+            BelongsToManyField::make('Users', 'activeUsers', User::class)
+                ->options(\App\Models\User::where('active', true)->get())
                 ->rules(['required'])
                 ->canSelectAll(),
 
