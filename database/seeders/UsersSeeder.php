@@ -16,8 +16,6 @@ class UsersSeeder extends Seeder
     {
         $users = [
             ['name' => 'Abdo', 'email' => 'abdo@email.com', 'password' => bcrypt('123456789')],
-            ['name' => 'Aamer', 'email' => 'aamer@email.com', 'password' => bcrypt('123456789')],
-            ['name' => 'Keshta', 'email' => 'keshta@email.com', 'password' => bcrypt('123456789')]
         ];
 
         foreach ($users as $user) {
